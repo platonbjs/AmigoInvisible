@@ -45,7 +45,7 @@ def send_mail(recipient, amigo_invisible):
     server.login(username,password)
     server.sendmail(SENDER, recipient, msg.as_string())
     server.quit()
-    print("Enviado correo a",recipient,")
+    print("Enviado correo a",recipient)
 def leer_participantes():
     with open(FICHERO_PARTICIPANTES, mode='r') as f:
         reader = csv.reader(f)
