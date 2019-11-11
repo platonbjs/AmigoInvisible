@@ -3,13 +3,21 @@ import csv
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+# Configuracion
+FICHERO_PARTICIPANTES = 'participantes.csv'
+SENDER = 'your_email@domain.com'
+USERNAME = "username"
+PASSWORD = "password"
+MAIL_SERVER = 'smtp.gmail.com:587'
+SUBJECT = 'Tu amigo invisible'
+##########
+
 # Funcion para enviar correos
 def send_mail(recipient, amigo_invisible):
-    fromaddr = 'your_email@domain.com'
-    toaddrs  = recipient
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = "Your subject"
-    msg['From'] = fromaddr
+    msg['Subject'] = SUBJECT
+    msg['From'] = SENDER
     msg['To'] = recipient
     text = "Hola!\nTu amigo invisible es \n"+amigo_invisible
     html = """\
@@ -27,35 +35,34 @@ def send_mail(recipient, amigo_invisible):
     part2 = MIMEText(html, 'html')
     msg.attach(part1)
     msg.attach(part2)
-    username = 'username'
-    password = 'password'
+    username = USERNAME
+    password = PASSWORD
 
-    # Enviando el correo desde gmail
-    server = smtplib.SMTP('smtp.gmail.com:587')
+    # Enviando el correo
+    server = smtplib.SMTP(MAIL_SERVER)
     server.starttls()
     server.login(username,password)
-    server.sendmail(fromaddr, toaddrs, msg.as_string())
+    server.sendmail(SENDER, recipient, msg.as_string())
     server.quit()
-    #print("Enviado correo a",recipient,"para que regale a", amigo_invisible)
+    print("Enviado correo a",recipient,")
 def leer_participantes():
     # csv con email,nombre
-    with open('participantes.csv', mode='r') as f:
+    with open(FICHERO_PARTICIPANTES, mode='r') as f:
         reader = csv.reader(f)
         participantes = list(reader)
-        return participantes
-
+    return participantes
 
 # Creamos una nueva lista con orden aleatorio
 def create_random_list(participantes):
     lista_random=[]
     temp = participantes.copy()
     num_part = len(participantes)
-
     for i in range(0,num_part):
         num = random.randint(1,len(temp))
         lista_random.append(temp[num-1])
         temp.pop(num-1)
     return lista_random
+
 # Hacemos el sorteo asignandole a cada participante el siguiente en la lista de forma circular
 def hacer_sorteo(lista_random):
     num_part = len(lista_random)
