@@ -5,6 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 # Configuracion
+# csv con email,nombre
 FICHERO_PARTICIPANTES = 'participantes.csv'
 SENDER = 'your_email@domain.com'
 USERNAME = "username"
@@ -46,7 +47,6 @@ def send_mail(recipient, amigo_invisible):
     server.quit()
     print("Enviado correo a",recipient,")
 def leer_participantes():
-    # csv con email,nombre
     with open(FICHERO_PARTICIPANTES, mode='r') as f:
         reader = csv.reader(f)
         participantes = list(reader)
